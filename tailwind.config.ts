@@ -19,10 +19,12 @@ const config: Config = {
           success: "#166f50",
           warning: "#fcbe59",
           error: "#f6290e",
+          
         },
       },
     ],
   },
+  
   plugins: [require("daisyui")],
 };
 export default config;
