@@ -1,15 +1,15 @@
 import Image from "next/image";
-import prisma from "./lib/db/prisma";
+import prisma from "../lib/db/prisma";
 import ProductCard from "@/components/ProductCard";
 import Link from "next/link";
 
 export default async function Home() {
-  const products = await prisma.products.findMany({
+  const products = await prisma.product.findMany({
     orderBy: { id: "desc" },
   });
   return (
     <div>
-      <div className="hero rounded-xl bg-base-200">
+      <div className="hero rounded-xl bg-base-200 mb-12">
         <div className="hero-content flex-col lg:flex-row lg:p-4">
           <Image
             src={products[0].imageUrl}
@@ -23,7 +23,7 @@ export default async function Home() {
             <h1 className="text-5xl font-bold ">{products[0].name}</h1>
             <p className="py-6 ">{products[0].description}</p>
             <Link
-              href={"products" + products[0].id}
+              href={"products/" + products[0].id}
               className="btn btn-primary"
             >
               Check it out

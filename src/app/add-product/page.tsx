@@ -1,6 +1,9 @@
 import { redirect } from "next/navigation";
-import prisma from "../lib/db/prisma";
+import prisma from "../../lib/db/prisma";
 import FormSumbmitButton from "@/components/FormSumbitButton";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import { env } from "@/lib/env";
 
 export const metadata = {
   title: "Add Product - Flowmazon",
@@ -17,7 +20,7 @@ async function addProduct(formdata: FormData) {
     throw Error("Missing Required Fields");
   }
 
-  await prisma.products.create({
+  await prisma.product.create({
     data: {
       name,
       description,
@@ -29,7 +32,13 @@ async function addProduct(formdata: FormData) {
   redirect("/");
 }
 
-export default function AddProductPage() {
+export default async function AddProductPage() {
+  const admin = env.ADMIN_EMAIL_ADDRESS;
+  const session = await getServerSession(authOptions);
+  if (session?.user?.email !== admin) {
+    redirect("/");
+  }
+
   return (
     <div>
       <h1 className="text-lg mb-3 font-bold">Add Product</h1>
